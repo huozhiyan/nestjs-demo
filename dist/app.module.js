@@ -10,6 +10,8 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const user_module_1 = require("./user/user.module");
 const config_1 = require("@nestjs/config");
+const dotenv = require("dotenv");
+const envFilePath = `.env.${process.env.NODE_ENV || "development"}`;
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -18,6 +20,8 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
+                envFilePath,
+                load: [() => dotenv.config({ path: ".env" })],
             }),
             user_module_1.UserModule,
         ],

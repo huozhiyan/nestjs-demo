@@ -24,6 +24,8 @@ let UserController = class UserController {
         const host = this.configService.get(config_const_1.ConfigEnum.DB_HOST);
         console.log("db", db);
         console.log("host", host);
+        const url = this.configService.get("DB_URL");
+        console.log("url", url);
         return this.userService.getUsers();
     }
     addUser() {
