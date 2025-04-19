@@ -12,6 +12,8 @@ const user_module_1 = require("./user/user.module");
 const config_1 = require("@nestjs/config");
 const dotenv = require("dotenv");
 const Joi = require("joi");
+const typeorm_1 = require("@nestjs/typeorm");
+const config_const_1 = require("./enum/config.const");
 const envFilePath = `.env.${process.env.NODE_ENV || "development"}`;
 let AppModule = class AppModule {
 };
@@ -28,8 +30,27 @@ exports.AppModule = AppModule = __decorate([
                         .valid("development", "production", "test")
                         .default("development"),
                     DB_PORT: Joi.number().default(3306),
-                    DB_URL: Joi.string().domain(),
                     DB_HOST: Joi.string().ip(),
+                    DB_TYPE: Joi.string().valid("mysql", "postgres"),
+                    DB_DATABASE: Joi.string().required(),
+                    DB_USERNAME: Joi.string().required(),
+                    DB_PASSWORD: Joi.string().required(),
+                    DB_SYNC: Joi.boolean().default(false),
+                }),
+            }),
+            typeorm_1.TypeOrmModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                inject: [config_1.ConfigService],
+                useFactory: (configService) => ({
+                    type: configService.get(config_const_1.ConfigEnum.DB_TYPE),
+                    host: configService.get(config_const_1.ConfigEnum.DB_HOST),
+                    port: configService.get(config_const_1.ConfigEnum.DB_PORT),
+                    username: configService.get(config_const_1.ConfigEnum.DB_USERNAME),
+                    password: configService.get(config_const_1.ConfigEnum.DB_PASSWORD),
+                    database: configService.get(config_const_1.ConfigEnum.DB_DATABASE),
+                    entities: [],
+                    synchronize: configService.get(config_const_1.ConfigEnum.DB_SYNC),
+                    logging: ["error", "warn"],
                 }),
             }),
             user_module_1.UserModule,
