@@ -7,6 +7,10 @@ import * as dotenv from "dotenv";
 import * as Joi from "joi"; // 用于验证环境变量的库
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { ConfigEnum } from "./enum/config.const"; // 导入配置枚举
+import { User } from "./user/user.entity";
+import { Profile } from "./user/profile.entity";
+import { Roles } from "./roles/roles.entity";
+import { Logs } from "./logs/logs.entity";
 
 /**
  * 动态生成环境变量文件路径：
@@ -57,7 +61,7 @@ const envFilePath = `.env.${process.env.NODE_ENV || "development"}`;
           username: configService.get(ConfigEnum.DB_USERNAME), // 数据库用户名
           password: configService.get(ConfigEnum.DB_PASSWORD), // 数据库密码
           database: configService.get(ConfigEnum.DB_DATABASE), // 数据库名称
-          entities: [], // 实体类数组
+          entities: [User, Profile, Roles, Logs], // 实体类数组
           synchronize: configService.get(ConfigEnum.DB_SYNC), // 是否自动同步数据库结构
           logging: ["error", "warn"], // 日志级别
         }) as TypeOrmModuleOptions,

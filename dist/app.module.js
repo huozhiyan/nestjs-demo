@@ -14,6 +14,10 @@ const dotenv = require("dotenv");
 const Joi = require("joi");
 const typeorm_1 = require("@nestjs/typeorm");
 const config_const_1 = require("./enum/config.const");
+const user_entity_1 = require("./user/user.entity");
+const profile_entity_1 = require("./user/profile.entity");
+const roles_entity_1 = require("./roles/roles.entity");
+const logs_entity_1 = require("./logs/logs.entity");
 const envFilePath = `.env.${process.env.NODE_ENV || "development"}`;
 let AppModule = class AppModule {
 };
@@ -48,7 +52,7 @@ exports.AppModule = AppModule = __decorate([
                     username: configService.get(config_const_1.ConfigEnum.DB_USERNAME),
                     password: configService.get(config_const_1.ConfigEnum.DB_PASSWORD),
                     database: configService.get(config_const_1.ConfigEnum.DB_DATABASE),
-                    entities: [],
+                    entities: [user_entity_1.User, profile_entity_1.Profile, roles_entity_1.Roles, logs_entity_1.Logs],
                     synchronize: configService.get(config_const_1.ConfigEnum.DB_SYNC),
                     logging: ["error", "warn"],
                 }),
