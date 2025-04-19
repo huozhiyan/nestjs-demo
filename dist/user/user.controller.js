@@ -13,19 +13,14 @@ exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const config_1 = require("@nestjs/config");
-const config_const_1 = require("../enum/config.const");
 let UserController = class UserController {
     constructor(userService, configService) {
         this.userService = userService;
         this.configService = configService;
     }
     getUsers() {
-        const db = this.configService.get(config_const_1.ConfigEnum.DB);
-        const host = this.configService.get(config_const_1.ConfigEnum.DB_HOST);
-        console.log("db", db);
-        console.log("host", host);
-        const url = this.configService.get("DB_URL");
-        console.log("url", url);
+        const data = this.configService.get("db");
+        console.log("data", data);
         return this.userService.getUsers();
     }
     addUser() {
