@@ -95,4 +95,21 @@ export class UserController {
   getUserLogs(): any {
     return this.userService.findUserLogs(2); // 调用服务层方法查询用户日志
   }
+
+  /*
+   * 获取用户的日志
+   * @returns 用户的日志
+   * - 路由：GET /user/logsByGroup
+   * @description 获取用户的日志信息
+   */
+  @Get("logsByGroup")
+  async getLogsByGroup(): Promise<any> {
+    const res = await this.userService.findLogsByGroup(2); // 调用服务层方法查询用户日志按组
+
+    // 处理查询结果
+    return res.map((o) => ({
+      result: o.result,
+      count: o.count,
+    }));
+  }
 }

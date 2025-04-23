@@ -59,6 +59,20 @@ let UserService = class UserService {
             },
         });
     }
+    async findLogsByGroup(id) {
+        return this.logsRepository
+            .createQueryBuilder("logs")
+            .select("logs.result", "result")
+            .addSelect('Count("logs.result")', "count")
+            .leftJoinAndSelect("logs.user", "user")
+            .where("user.id = :id", { id })
+            .groupBy("logs.result")
+            .orderBy("result", "DESC")
+            .offset(2)
+            .addOrderBy("count", "DESC")
+            .limit(3)
+            .getRawMany();
+    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([

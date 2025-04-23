@@ -13,4 +13,5 @@ export declare class UserService {
     remove(id: number): Promise<import("typeorm").DeleteResult>;
     findProfile(id: number): Promise<User>;
     findUserLogs(id: number): Promise<Logs[]>;
+    findLogsByGroup(id: number): Promise<any[]>;
 }

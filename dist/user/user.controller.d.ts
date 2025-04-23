@@ -9,4 +9,5 @@ export declare class UserController {
     removeUser(): any;
     getUserProfile(): any;
     getUserLogs(): any;
+    getLogsByGroup(): Promise<any>;
 }

@@ -105,4 +105,24 @@ export class UserService {
       },
     });
   }
+
+  /**
+   * 查询用户的日志
+   * @param id 用户 ID
+   * @returns 用户的日志
+   */
+  async findLogsByGroup(id: number) {
+    return this.logsRepository
+      .createQueryBuilder("logs") // 创建查询构造器，指定查询的表别名为 "logs"
+      .select("logs.result", "result") // 选择日志的结果字段，并将其别名为 "result"
+      .addSelect('Count("logs.result")', "count") // 统计每种结果的数量，并将其别名为 "count"
+      .leftJoinAndSelect("logs.user", "user") // 左连接 "logs" 表中的 "user" 字段，指定别名为 "user"
+      .where("user.id = :id", { id }) // 添加条件，筛选出指定用户 ID 的日志
+      .groupBy("logs.result") // 按 "logs.result" 字段分组
+      .orderBy("result", "DESC") // 按 "result" 字段降序排序
+      .offset(2) // 跳过前两个分组结果
+      .addOrderBy("count", "DESC") // 按 "count" 字段降序排序
+      .limit(3) // 限制返回的分组数量为 3
+      .getRawMany(); // 执行查询并返回原始结果数组
+  }
 }

@@ -42,6 +42,13 @@ let UserController = class UserController {
     getUserLogs() {
         return this.userService.findUserLogs(2);
     }
+    async getLogsByGroup() {
+        const res = await this.userService.findLogsByGroup(2);
+        return res.map((o) => ({
+            result: o.result,
+            count: o.count,
+        }));
+    }
 };
 exports.UserController = UserController;
 __decorate([
@@ -86,6 +93,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Object)
 ], UserController.prototype, "getUserLogs", null);
+__decorate([
+    (0, common_1.Get)("logsByGroup"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getLogsByGroup", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)("user"),
     __metadata("design:paramtypes", [user_service_1.UserService])
