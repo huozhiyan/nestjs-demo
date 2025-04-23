@@ -6,8 +6,10 @@ import {
   JoinTable,
   ManyToMany,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm"; // 从 TypeORM 导入装饰器
+import { Profile } from "./profile.entity";
 
 /**
  * 用户实体类，映射到数据库中的 `User` 表
@@ -49,4 +51,12 @@ export class User {
   @ManyToMany(() => Roles, (roles) => roles.users)
   @JoinTable({ name: "user_roles" }) // 指定连接表的名称为 `user_roles`
   roles: Roles[]; // 多对多关系，一个用户可能拥有多个角色
+
+  /**
+   * 一对一关系：
+   * - 一个用户对应一个个人资料
+   * - `Profile` 表中的 `user` 字段表示反向关系
+   */
+  @OneToOne(() => Profile, (profile) => profile.user)
+  profile: Profile; // 一对一关系，一个用户对应一个个人资料
 }

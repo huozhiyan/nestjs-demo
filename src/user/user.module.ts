@@ -1,9 +1,13 @@
-import { Module } from '@nestjs/common';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
+import { Module } from "@nestjs/common";
+import { UserController } from "./user.controller";
+import { UserService } from "./user.service";
+import { User } from "./user.entity";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { Logs } from "src/logs/logs.entity";
 
 @Module({
+  imports: [TypeOrmModule.forFeature([User, Logs])], // 注册 User、Logs 实体
   controllers: [UserController],
-  providers: [UserService]
+  providers: [UserService],
 })
 export class UserModule {}
