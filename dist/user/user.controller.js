@@ -8,19 +8,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var UserController_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
-let UserController = UserController_1 = class UserController {
-    constructor(userService) {
+const nestjs_pino_1 = require("nestjs-pino");
+let UserController = class UserController {
+    constructor(userService, logger) {
         this.userService = userService;
-        this.logger = new common_1.Logger(UserController_1.name);
+        this.logger = logger;
         this.logger.log("UserController initialized");
     }
     getUsers() {
-        this.logger.log("请求 getAll 成功");
         return this.userService.findAll();
     }
     getOneUser() {
@@ -103,8 +102,9 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getLogsByGroup", null);
-exports.UserController = UserController = UserController_1 = __decorate([
+exports.UserController = UserController = __decorate([
     (0, common_1.Controller)("user"),
-    __metadata("design:paramtypes", [user_service_1.UserService])
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        nestjs_pino_1.Logger])
 ], UserController);
 //# sourceMappingURL=user.controller.js.map
