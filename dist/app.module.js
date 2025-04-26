@@ -54,7 +54,7 @@ exports.AppModule = AppModule = __decorate([
                     database: configService.get(config_const_1.ConfigEnum.DB_DATABASE),
                     entities: [user_entity_1.User, profile_entity_1.Profile, roles_entity_1.Roles, logs_entity_1.Logs],
                     synchronize: configService.get(config_const_1.ConfigEnum.DB_SYNC),
-                    logging: process.env.NODE_ENV === "development",
+                    logging: false,
                 }),
             }),
             user_module_1.UserModule,

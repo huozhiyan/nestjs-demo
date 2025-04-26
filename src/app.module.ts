@@ -64,7 +64,8 @@ const envFilePath = `.env.${process.env.NODE_ENV || "development"}`;
           entities: [User, Profile, Roles, Logs], // 实体类数组
           synchronize: configService.get(ConfigEnum.DB_SYNC), // 是否自动同步数据库结构
           // logging: ["error", "warn"], // 日志级别
-          logging: process.env.NODE_ENV === "development", // 日志
+          // logging: process.env.NODE_ENV === "development", // 日志
+          logging: false,
         }) as TypeOrmModuleOptions,
     }),
     UserModule, // 导入用户模块
