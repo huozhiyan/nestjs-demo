@@ -10,8 +10,6 @@ async function bootstrap() {
     const port = 3000;
     await app.listen(port);
     logger.log(`App运行在：${port}`);
-    logger.warn(`App运行在：${port}`);
-    logger.error(`App运行在：${port}`);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

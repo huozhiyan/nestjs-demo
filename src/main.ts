@@ -26,8 +26,8 @@ async function bootstrap() {
 
   // 使用 Logger 记录应用启动信息
   logger.log(`App运行在：${port}`); // 普通日志
-  logger.warn(`App运行在：${port}`); // 警告日志
-  logger.error(`App运行在：${port}`); // 错误日志
+  // logger.warn(`App运行在：${port}`); // 警告日志
+  // logger.error(`App运行在：${port}`); // 错误日志
 }
 
 // 启动应用
