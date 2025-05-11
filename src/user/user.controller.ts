@@ -1,7 +1,7 @@
-import { Controller, Get, Post } from "@nestjs/common"; // 导入控制器和 HTTP 请求装饰器
+import { Controller, Get, Logger, Post } from "@nestjs/common"; // 导入控制器和 HTTP 请求装饰器
 import { UserService } from "./user.service"; // 导入用户服务
 import { User } from "./user.entity"; // 导入用户实体
-import { Logger } from "nestjs-pino";
+// import { Logger } from "nestjs-pino";
 
 /**
  * 用户控制器类
@@ -10,6 +10,7 @@ import { Logger } from "nestjs-pino";
  */
 @Controller("user") // 定义控制器的路由前缀为 "user"
 export class UserController {
+  // private logger = new Logger(UserController.name); // 创建 Logger 实例，用于记录日志
   /**
    * 构造函数
    * - 注入用户服务
@@ -17,7 +18,7 @@ export class UserController {
    */
   constructor(
     private userService: UserService,
-    private logger: Logger
+    private readonly logger: Logger // 注入日志服务
   ) {
     this.logger.log("UserController initialized"); // 控制器初始化时记录日志
   }
@@ -29,6 +30,9 @@ export class UserController {
    */
   @Get("getAll")
   getUsers(): any {
+    this.logger.log("Fetching all users"); // 记录获取所有用户的日志
+    this.logger.warn("Fetching all users");
+    this.logger.error("Fetching all users");
     return this.userService.findAll(); // 调用服务层方法查询所有用户
   }
 

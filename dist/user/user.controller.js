@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
-const nestjs_pino_1 = require("nestjs-pino");
 let UserController = class UserController {
     constructor(userService, logger) {
         this.userService = userService;
@@ -20,6 +19,9 @@ let UserController = class UserController {
         this.logger.log("UserController initialized");
     }
     getUsers() {
+        this.logger.log("Fetching all users");
+        this.logger.warn("Fetching all users");
+        this.logger.error("Fetching all users");
         return this.userService.findAll();
     }
     getOneUser() {
@@ -105,6 +107,6 @@ __decorate([
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)("user"),
     __metadata("design:paramtypes", [user_service_1.UserService,
-        nestjs_pino_1.Logger])
+        common_1.Logger])
 ], UserController);
 //# sourceMappingURL=user.controller.js.map

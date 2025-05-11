@@ -1,8 +1,8 @@
+import { Logger } from "@nestjs/common";
 import { UserService } from "./user.service";
-import { Logger } from "nestjs-pino";
 export declare class UserController {
     private userService;
-    private logger;
+    private readonly logger;
     constructor(userService: UserService, logger: Logger);
     getUsers(): any;
     getOneUser(): any;

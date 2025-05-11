@@ -18,13 +18,12 @@ const user_entity_1 = require("./user/user.entity");
 const profile_entity_1 = require("./user/profile.entity");
 const roles_entity_1 = require("./roles/roles.entity");
 const logs_entity_1 = require("./logs/logs.entity");
-const nestjs_pino_1 = require("nestjs-pino");
-const path_1 = require("path");
 const envFilePath = `.env.${process.env.NODE_ENV || "development"}`;
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
+    (0, common_1.Global)(),
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({
@@ -59,36 +58,11 @@ exports.AppModule = AppModule = __decorate([
                     logging: false,
                 }),
             }),
-            nestjs_pino_1.LoggerModule.forRoot({
-                pinoHttp: {
-                    transport: {
-                        targets: [
-                            process.env.NODE_ENV === "development"
-                                ? {
-                                    level: "info",
-                                    target: "pino-pretty",
-                                    options: {
-                                        colorize: true,
-                                    },
-                                }
-                                : {
-                                    level: "info",
-                                    target: "pino-roll",
-                                    options: {
-                                        file: (0, path_1.join)("log", "log.txt"),
-                                        frequency: "daily",
-                                        size: "10M",
-                                        mkdir: true,
-                                    },
-                                },
-                        ],
-                    },
-                },
-            }),
             user_module_1.UserModule,
         ],
         controllers: [],
-        providers: [],
+        providers: [common_1.Logger],
+        exports: [common_1.Logger],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

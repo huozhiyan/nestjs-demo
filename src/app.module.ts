@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Global, Logger, Module } from "@nestjs/common";
 import { UserModule } from "./user/user.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 // import Configuration from "./configuration";
@@ -21,6 +21,7 @@ import { join } from "path";
  */
 const envFilePath = `.env.${process.env.NODE_ENV || "development"}`;
 
+@Global() // 声明为全局模块，所有其他模块均可直接注入
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -71,35 +72,36 @@ const envFilePath = `.env.${process.env.NODE_ENV || "development"}`;
         }) as TypeOrmModuleOptions,
     }),
     // 配置日志模块
-    LoggerModule.forRoot({
-      pinoHttp: {
-        transport: {
-          targets: [
-            process.env.NODE_ENV === "development"
-              ? {
-                  level: "info", // 日志级别为 info
-                  target: "pino-pretty", // 使用 pino-pretty 格式化日志
-                  options: {
-                    colorize: true, // 启用日志颜色
-                  },
-                }
-              : {
-                  level: "info", // 日志级别为 info
-                  target: "pino-roll", // 使用 pino-roll 将日志写入文件
-                  options: {
-                    file: join("log", "log.txt"), // 日志文件路径
-                    frequency: "daily", // 日志文件按天滚动
-                    size: "10M", // 每个日志文件的最大大小为 10MB
-                    mkdir: true, // 如果目录不存在，则自动创建
-                  },
-                },
-          ],
-        },
-      },
-    }),
+    // LoggerModule.forRoot({
+    //   pinoHttp: {
+    //     transport: {
+    //       targets: [
+    //         process.env.NODE_ENV === "development"
+    //           ? {
+    //               level: "info", // 日志级别为 info
+    //               target: "pino-pretty", // 使用 pino-pretty 格式化日志
+    //               options: {
+    //                 colorize: true, // 启用日志颜色
+    //               },
+    //             }
+    //           : {
+    //               level: "info", // 日志级别为 info
+    //               target: "pino-roll", // 使用 pino-roll 将日志写入文件
+    //               options: {
+    //                 file: join("log", "log.txt"), // 日志文件路径
+    //                 frequency: "daily", // 日志文件按天滚动
+    //                 size: "10M", // 每个日志文件的最大大小为 10MB
+    //                 mkdir: true, // 如果目录不存在，则自动创建
+    //               },
+    //             },
+    //       ],
+    //     },
+    //   },
+    // }),
     UserModule, // 导入用户模块
   ],
   controllers: [], // 控制器（当前为空）
-  providers: [], // 服务提供者（当前为空）
+  providers: [Logger], // 服务提供者
+  exports: [Logger], // 导出 Logger 以供其他模块使用
 })
 export class AppModule {}
