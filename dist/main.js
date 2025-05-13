@@ -6,6 +6,7 @@ const winston_1 = require("winston");
 const winston = require("winston");
 const nest_winston_1 = require("nest-winston");
 require("winston-daily-rotate-file");
+const http_exception_filter_1 = require("./filters/http-exception.filter");
 async function bootstrap() {
     const instance = (0, winston_1.createLogger)({
         transports: [
@@ -35,12 +36,14 @@ async function bootstrap() {
             }),
         ],
     });
+    const logger = nest_winston_1.WinstonModule.createLogger({
+        instance,
+    });
     const app = await core_1.NestFactory.create(app_module_1.AppModule, {
-        logger: nest_winston_1.WinstonModule.createLogger({
-            instance,
-        }),
+        logger,
     });
     app.setGlobalPrefix("api");
+    app.useGlobalFilters(new http_exception_filter_1.HttpExceptionFilter(logger));
     const port = 3000;
     await app.listen(port);
     instance.info(`应用已启动，监听端口：${port}`);

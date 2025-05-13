@@ -19,6 +19,10 @@ let UserController = class UserController {
         this.logger.log("UserController initialized");
     }
     getUsers() {
+        const user = { isAdmin: false };
+        if (!user.isAdmin) {
+            throw new common_1.HttpException("User is not admin", common_1.HttpStatus.FORBIDDEN);
+        }
         this.logger.log("Fetching all users");
         this.logger.warn("Fetching all users");
         this.logger.error("Fetching all users");

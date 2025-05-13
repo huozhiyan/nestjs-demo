@@ -1,4 +1,11 @@
-import { Controller, Get, Logger, Post } from "@nestjs/common"; // 导入控制器和 HTTP 请求装饰器
+import {
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Logger,
+  Post,
+} from "@nestjs/common"; // 导入控制器和 HTTP 请求装饰器
 import { UserService } from "./user.service"; // 导入用户服务
 import { User } from "./user.entity"; // 导入用户实体
 // import { Logger } from "nestjs-pino";
@@ -30,6 +37,10 @@ export class UserController {
    */
   @Get("getAll")
   getUsers(): any {
+    const user = { isAdmin: false };
+    if (!user.isAdmin) {
+      throw new HttpException("User is not admin", HttpStatus.FORBIDDEN);
+    }
     this.logger.log("Fetching all users"); // 记录获取所有用户的日志
     this.logger.warn("Fetching all users");
     this.logger.error("Fetching all users");

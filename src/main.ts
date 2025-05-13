@@ -5,6 +5,7 @@ import * as winston from "winston";
 import { utilities, WinstonModule } from "nest-winston"; // 导入 nest-winston，用于 Nest 集成 Winston 日志库}
 // import { Logger } from "@nestjs/common"; // 导入 Logger，用于日志记录
 import "winston-daily-rotate-file"; // 导入 Winston 日志轮转文件传输器
+import { HttpExceptionFilter } from "./filters/http-exception.filter";
 
 /**
  * 应用程序的入口文件
@@ -56,18 +57,20 @@ async function bootstrap() {
     ],
   });
 
+  // 创建 Winston 日志模块实例
+  const logger = WinstonModule.createLogger({
+    instance,
+  });
   // 创建应用实例，并可选配置日志级别
   const app = await NestFactory.create(AppModule, {
     // 日志级别配置（可选）
     // logger: ["error", "warn"], // 仅记录错误和警告日志
-    logger: WinstonModule.createLogger({
-      instance,
-    }),
+    logger,
   });
 
   // 设置全局路由前缀
   app.setGlobalPrefix("api"); // 所有路由将以 "api" 为前缀，例如 /api/user
-
+  app.useGlobalFilters(new HttpExceptionFilter(logger)); // 使用全局异常过滤器处理 HTTP 异常
   const port = 3000; // 定义应用监听的端口号
 
   // 启动应用并监听指定端口
