@@ -1,19 +1,12 @@
 import { Global, Logger, Module } from "@nestjs/common";
 import { UserModule } from "./user/user.module";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-// import Configuration from "./configuration";
+import { ConfigModule } from "@nestjs/config";
 // 导入 dotenv 库，用于解析 .env 文件
 import * as dotenv from "dotenv";
 import * as Joi from "joi"; // 用于验证环境变量的库
-import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { ConfigEnum } from "./enum/config.const"; // 导入配置枚举
-import { User } from "./user/user.entity";
-import { Profile } from "./user/profile.entity";
-import { Roles } from "./roles/roles.entity";
-import { Logs } from "./logs/logs.entity";
-import { LoggerModule } from "nestjs-pino";
-import { join } from "path";
+import { TypeOrmModule } from "@nestjs/typeorm";
 import { LogsModule } from "./logs/logs.module";
+import ormconfig from "ormconfig";
 
 /**
  * 动态生成环境变量文件路径：
@@ -54,51 +47,7 @@ const envFilePath = `.env.${process.env.NODE_ENV || "development"}`;
       // load: [Configuration], // 可选：加载自定义配置文件
     }),
 
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule], // 导入 ConfigModule 以获取配置
-      inject: [ConfigService], // 注入 ConfigService
-      useFactory: (configService: ConfigService) =>
-        ({
-          type: configService.get(ConfigEnum.DB_TYPE), // 数据库类型
-          host: configService.get(ConfigEnum.DB_HOST), // 数据库主机地址
-          port: configService.get(ConfigEnum.DB_PORT), // 数据库端口
-          username: configService.get(ConfigEnum.DB_USERNAME), // 数据库用户名
-          password: configService.get(ConfigEnum.DB_PASSWORD), // 数据库密码
-          database: configService.get(ConfigEnum.DB_DATABASE), // 数据库名称
-          entities: [User, Profile, Roles, Logs], // 实体类数组
-          synchronize: configService.get(ConfigEnum.DB_SYNC), // 是否自动同步数据库结构
-          // logging: ["error", "warn"], // 日志级别
-          // logging: process.env.NODE_ENV === "development", // 日志
-          logging: false,
-        }) as TypeOrmModuleOptions,
-    }),
-    // 配置日志模块
-    // LoggerModule.forRoot({
-    //   pinoHttp: {
-    //     transport: {
-    //       targets: [
-    //         process.env.NODE_ENV === "development"
-    //           ? {
-    //               level: "info", // 日志级别为 info
-    //               target: "pino-pretty", // 使用 pino-pretty 格式化日志
-    //               options: {
-    //                 colorize: true, // 启用日志颜色
-    //               },
-    //             }
-    //           : {
-    //               level: "info", // 日志级别为 info
-    //               target: "pino-roll", // 使用 pino-roll 将日志写入文件
-    //               options: {
-    //                 file: join("log", "log.txt"), // 日志文件路径
-    //                 frequency: "daily", // 日志文件按天滚动
-    //                 size: "10M", // 每个日志文件的最大大小为 10MB
-    //                 mkdir: true, // 如果目录不存在，则自动创建
-    //               },
-    //             },
-    //       ],
-    //     },
-    //   },
-    // }),
+    TypeOrmModule.forRoot(ormconfig),
     UserModule, // 导入用户模块
     LogsModule, // 导入日志模块
   ],
