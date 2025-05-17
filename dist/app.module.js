@@ -18,6 +18,7 @@ const user_entity_1 = require("./user/user.entity");
 const profile_entity_1 = require("./user/profile.entity");
 const roles_entity_1 = require("./roles/roles.entity");
 const logs_entity_1 = require("./logs/logs.entity");
+const logs_module_1 = require("./logs/logs.module");
 const envFilePath = `.env.${process.env.NODE_ENV || "development"}`;
 let AppModule = class AppModule {
 };
@@ -59,6 +60,7 @@ exports.AppModule = AppModule = __decorate([
                 }),
             }),
             user_module_1.UserModule,
+            logs_module_1.LogsModule,
         ],
         controllers: [],
         providers: [common_1.Logger],

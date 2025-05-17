@@ -13,6 +13,7 @@ import { Roles } from "./roles/roles.entity";
 import { Logs } from "./logs/logs.entity";
 import { LoggerModule } from "nestjs-pino";
 import { join } from "path";
+import { LogsModule } from "./logs/logs.module";
 
 /**
  * 动态生成环境变量文件路径：
@@ -99,6 +100,7 @@ const envFilePath = `.env.${process.env.NODE_ENV || "development"}`;
     //   },
     // }),
     UserModule, // 导入用户模块
+    LogsModule, // 导入日志模块
   ],
   controllers: [], // 控制器（当前为空）
   providers: [Logger], // 服务提供者

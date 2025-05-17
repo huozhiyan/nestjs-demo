@@ -3,12 +3,13 @@ import {
   Get,
   HttpException,
   HttpStatus,
-  Logger,
+  Inject,
+  LoggerService,
   Post,
 } from "@nestjs/common"; // 导入控制器和 HTTP 请求装饰器
 import { UserService } from "./user.service"; // 导入用户服务
 import { User } from "./user.entity"; // 导入用户实体
-// import { Logger } from "nestjs-pino";
+import { WINSTON_MODULE_NEST_PROVIDER } from "nest-winston";
 
 /**
  * 用户控制器类
@@ -25,7 +26,7 @@ export class UserController {
    */
   constructor(
     private userService: UserService,
-    private readonly logger: Logger // 注入日志服务
+    @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: LoggerService
   ) {
     this.logger.log("UserController initialized"); // 控制器初始化时记录日志
   }

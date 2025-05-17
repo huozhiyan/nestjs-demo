@@ -8,10 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
+const nest_winston_1 = require("nest-winston");
 let UserController = class UserController {
     constructor(userService, logger) {
         this.userService = userService;
@@ -110,7 +114,7 @@ __decorate([
 ], UserController.prototype, "getLogsByGroup", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)("user"),
-    __metadata("design:paramtypes", [user_service_1.UserService,
-        common_1.Logger])
+    __param(1, (0, common_1.Inject)(nest_winston_1.WINSTON_MODULE_NEST_PROVIDER)),
+    __metadata("design:paramtypes", [user_service_1.UserService, Object])
 ], UserController);
 //# sourceMappingURL=user.controller.js.map
