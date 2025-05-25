@@ -4,7 +4,7 @@ import * as winston from "winston";
 import { utilities, WinstonModule, WinstonModuleOptions } from "nest-winston"; // 导入 nest-winston，用于 Nest 集成 Winston 日志库
 import { Console } from "winston/lib/winston/transports";
 import * as DailyRotateFile from "winston-daily-rotate-file";
-import { LogEnum } from "src/enum/config.const";
+import { LogEnum } from "../enum/config.const";
 
 /**
  * 日志模块

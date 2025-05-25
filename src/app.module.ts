@@ -6,7 +6,7 @@ import * as dotenv from "dotenv";
 import * as Joi from "joi"; // 用于验证环境变量的库
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { LogsModule } from "./logs/logs.module";
-import ormconfig from "ormconfig";
+import { connectionParams } from "../ormconfig";
 
 /**
  * 动态生成环境变量文件路径：
@@ -47,7 +47,7 @@ const envFilePath = `.env.${process.env.NODE_ENV || "development"}`;
       // load: [Configuration], // 可选：加载自定义配置文件
     }),
 
-    TypeOrmModule.forRoot(ormconfig),
+    TypeOrmModule.forRoot(connectionParams),
     UserModule, // 导入用户模块
     LogsModule, // 导入日志模块
   ],

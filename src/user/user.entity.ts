@@ -1,5 +1,5 @@
-import { Logs } from "src/logs/logs.entity"; // 导入日志实体
-import { Roles } from "src/roles/roles.entity"; // 导入角色实体
+import { Logs } from "../logs/logs.entity"; // 导入日志实体
+import { Roles } from "../roles/roles.entity"; // 导入角色实体
 import {
   Column,
   Entity,

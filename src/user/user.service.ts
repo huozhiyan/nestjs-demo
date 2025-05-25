@@ -2,7 +2,7 @@ import { Injectable, Post } from "@nestjs/common"; // 导入 Injectable 装饰�
 import { InjectRepository } from "@nestjs/typeorm"; // 用于注入 TypeORM 仓库
 import { Repository } from "typeorm"; // 导入 TypeORM 的 Repository 类
 import { User } from "./user.entity"; // 导入用户实体
-import { Logs } from "src/logs/logs.entity";
+import { Logs } from "../logs/logs.entity"; // 导入日志实体
 
 /**
  * 用户服务类
