@@ -37,12 +37,17 @@ const envFilePath = `.env.${process.env.NODE_ENV || "development"}`;
           .valid("development", "production", "test") // 限制 NODE_ENV 的合法值
           .default("development"), // 默认值为 "development"
         DB_PORT: Joi.number().default(3306), // 数据库端口，默认值为 3306
-        DB_HOST: Joi.string().ip(), // 数据库主机地址，必须是合法的 IP 地址
+        DB_HOST: Joi.alternatives().try(
+          Joi.string().ip(),
+          Joi.string().domain()
+        ), // 数据库主机地址，必须是合法的 IP 地址
         DB_TYPE: Joi.string().valid("mysql", "postgres"), // 数据库类型，不能为空
         DB_DATABASE: Joi.string().required(), // 数据库名称，不能为空
         DB_USERNAME: Joi.string().required(), // 数据库用户名，不能为空
         DB_PASSWORD: Joi.string().required(), // 数据库密码，不能为空
         DB_SYNC: Joi.boolean().default(false), // 是否自动同步数据库结构，默认值为 false
+        LOG_ON: Joi.boolean(),
+        LOG_LEVEL: Joi.string(),
       }),
       // load: [Configuration], // 可选：加载自定义配置文件
     }),

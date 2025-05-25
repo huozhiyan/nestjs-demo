@@ -14,6 +14,18 @@ const nest_winston_1 = require("nest-winston");
 const transports_1 = require("winston/lib/winston/transports");
 const DailyRotateFile = require("winston-daily-rotate-file");
 const config_const_1 = require("../enum/config.const");
+function createDailyRotateFileTransport(filename, level) {
+    return new DailyRotateFile({
+        level,
+        dirname: "logs",
+        filename: `${filename}-%DATE%.log`,
+        datePattern: "YYYY-MM-DD-HH",
+        zippedArchive: true,
+        maxSize: "20m",
+        maxFiles: "14d",
+        format: winston.format.combine(winston.format.timestamp(), winston.format.simple()),
+    });
+}
 let LogsModule = class LogsModule {
 };
 exports.LogsModule = LogsModule;
@@ -27,31 +39,14 @@ exports.LogsModule = LogsModule = __decorate([
                         level: "info",
                         format: winston.format.combine(winston.format.timestamp(), nest_winston_1.utilities.format.nestLike()),
                     });
-                    const dailyTransports = new DailyRotateFile({
-                        level: "warn",
-                        dirname: "logs",
-                        filename: "application-%DATE%.log",
-                        datePattern: "YYYY-MM-DD-HH",
-                        zippedArchive: true,
-                        maxSize: "20m",
-                        maxFiles: "14d",
-                        format: winston.format.combine(winston.format.timestamp(), winston.format.simple()),
-                    });
-                    const dailyInfoTransports = new DailyRotateFile({
-                        level: configSerivice.get(config_const_1.LogEnum.LOG_LEVEL),
-                        dirname: "logs",
-                        filename: "info-%DATE%.log",
-                        datePattern: "YYYY-MM-DD-HH",
-                        zippedArchive: true,
-                        maxSize: "20m",
-                        maxFiles: "14d",
-                        format: winston.format.combine(winston.format.timestamp(), winston.format.simple()),
-                    });
                     return {
                         transports: [
                             consoleTransports,
                             ...(configSerivice.get(config_const_1.LogEnum.LOG_ON)
-                                ? [dailyTransports, dailyInfoTransports]
+                                ? [
+                                    createDailyRotateFileTransport("info", "application"),
+                                    createDailyRotateFileTransport("warn", "error"),
+                                ]
                                 : []),
                         ],
                     };
